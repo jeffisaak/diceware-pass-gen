@@ -1,0 +1,66 @@
+<resources>
+
+    <!-- App and activity titles -->
+    <string name="app_name">Diceware Password Generator</string>
+    <string name="title_activity_enter_dice_values">Dice Roll Entry</string>
+
+    <!-- MainActivity menu -->
+    <string name="action_help">Help</string>
+
+    <!-- Headings in the main activity -->
+    <string name="heading_random_number_source">Source of random numbers</string>
+    <string name="heading_password_length">Password length</string>
+    <string name="heading_password">Password</string>
+
+    <!-- Radio buttons -->
+    <string name="radio_android_prng">Android pseudo-random number generator</string>
+    <string name="radio_random_org">Random.org atmospheric noise</string>
+    <string name="radio_dice">Dice</string>
+
+    <!-- Buttons -->
+    <string name="new_password">New password</string>
+    <string name="copy_to_clipboard">Copy to clipboard</string>
+
+    <!-- Placeholders for the password while it's generating or after it failed -->
+    <string name="no_password">Please tap the \'new password\' button to start entering die rolls.</string>
+    <string name="random_org_fetching">Getting random data from random.org.</string>
+    <string name="random_org_error">Unable to get random numbers from random.org.</string>
+
+    <!-- The URL to fetch random data from random.org -->
+    <string name="random_org_url">https://www.random.org/integers/?num=%1$d&amp;min=1&amp;max=6&amp;col=1&amp;base=10&amp;format=plain&amp;rnd=new</string>
+
+    <!-- Die roll strings -->
+    <string name="die_roll_status">Need %1$d more values</string>
+    <string name="die_roll_info">Please roll %1$d six-sided dice (all at once or in batches) and tap the results on the dice images below.</string>
+
+    <!-- For building the password length information text -->
+    <string name="password_length_info">A Diceware password of the selected length can resist a brute force attack from a well-funded adversary (such as the NSA circa 2013) for %1$s (one trillion guesses per second assumed).</string>
+    <string name="password_length_segment">approximately %1$d %2$s</string>
+    <string name="password_length_forever">the rest of time</string>
+    <string name="password_length_zero">less than a second</string>
+    <string name="duration_seconds">seconds</string>
+    <string name="duration_minutes">minutes</string>
+    <string name="duration_hours">hours</string>
+    <string name="duration_days">days</string>
+    <string name="duration_years">years</string>
+    <string name="duration_decades">decades</string>
+    <string name="duration_centuries">centuries</string>
+    <string name="duration_millenia">millennia</string>
+    <string name="duration_ages">ages</string>
+    <string name="duration_epochs">epochs</string>
+    <string name="duration_eras">eras</string>
+    <string name="duration_eons">eons</string>
+
+    <!-- Miscellaneous -->
+    <string name="copied_to_clipboard">Password copied to clipboard</string>
+    <string name="password_gen_failed">Password generation failed. Please contact Apta Systems.</string>
+
+    <!-- Accessibility -->
+    <string name="accessibility_die_face_one">Die face: one</string>
+    <string name="accessibility_die_face_two">Die face: two</string>
+    <string name="accessibility_die_face_three">Die face: three</string>
+    <string name="accessibility_die_face_four">Die face: four</string>
+    <string name="accessibility_die_face_five">Die face: five</string>
+    <string name="accessibility_die_face_six">Die face: six</string>
+
+</resources>
