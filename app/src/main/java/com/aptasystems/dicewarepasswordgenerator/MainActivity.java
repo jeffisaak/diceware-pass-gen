@@ -3,19 +3,25 @@ package com.aptasystems.dicewarepasswordgenerator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -38,7 +44,12 @@ public class MainActivity extends AppCompatActivity {
     private static final String STATE_PASSWORD_LENGTH = "passwordLength";
     private static final String STATE_PASSWORD = "password";
 
+    private static final String INTENT_RESULT_KEY_PASSWORD = "password";
+
+    private static final String PREF_HIDE_CLIPBOARD_WARNING = "hideClipboardWarning";
+
     // Widgets.
+    private CoordinatorLayout _coordinatorLayout;
     private TextView _passwordLengthInfo;
     private RadioButton _androidPrngRadioButton;
     private RadioButton _randomOrgRadioButton;
@@ -69,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Grab our widgets to use later.
+        _coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
         _passwordLengthInfo = (TextView) findViewById(R.id.text_view_password_length_info);
         _androidPrngRadioButton = (RadioButton) findViewById(R.id.radio_android_prng);
         _randomOrgRadioButton = (RadioButton) findViewById(R.id.radio_random_org);
@@ -228,11 +240,40 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void copyToClipboard(View view) {
+
+        // Show a warning dialog if the user hasn't turned it off yet.
+        final SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        boolean hideClipboardWarning = prefs.getBoolean(PREF_HIDE_CLIPBOARD_WARNING, false);
+        if (!hideClipboardWarning) {
+            MaterialDialog dialog = new MaterialDialog.Builder(this)
+                    .title(R.string.clipboard_warning_title)
+                    .customView(R.layout.dialog_clipboard_warning, true)
+                    .positiveText(R.string.clipboard_dialog_positive)
+                    .negativeText(R.string.clipboard_dialog_negative)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            CheckBox checkBox = (CheckBox) dialog.getCustomView().findViewById(R.id.do_not_show_warning);
+                            prefs.edit().putBoolean(PREF_HIDE_CLIPBOARD_WARNING, checkBox.isChecked()).commit();
+
+                            copyToClipboard();
+                        }
+                    }).build();
+
+            dialog.show();
+
+        } else {
+            copyToClipboard();
+        }
+    }
+
+    private void copyToClipboard() {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", _passwordTextView.getText().toString());
         clipboard.setPrimaryClip(clip);
 
-        Toast.makeText(this, R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
+        Snackbar
+                .make(_coordinatorLayout, R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
     }
 
     /**
@@ -368,7 +409,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!isCancelled() && s != null) {
                     _passwordTextView.setText(s);
                     _copyToClipboardButton.setEnabled(true);
-                } else if( s == null) {
+                } else if (s == null) {
                     _passwordTextView.setText(getResources().getText(R.string.password_gen_failed));
                 }
                 super.onPostExecute(s);
@@ -446,6 +487,17 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_CODE_ENTER_DICE_VALUES);
     }
 
+    /**
+     * onBackPressed overridden to allow other activities to call this one to generate a password
+     * and retrieve the result.
+     */
+    @Override
+    public void onBackPressed() {
+        Intent result = new Intent();
+        result.putExtra(INTENT_RESULT_KEY_PASSWORD, _passwordTextView.getText().toString());
+        setResult(RESULT_OK, result);
+        super.onBackPressed();
+    }
 }
 
 

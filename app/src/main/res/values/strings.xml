@@ -51,6 +51,13 @@
     <string name="duration_eras">eras</string>
     <string name="duration_eons">eons</string>
 
+    <!-- Clipboard warning dialog -->
+    <string name="clipboard_warning_title">The clipboard is not secure!</string>
+    <string name="clipboard_warning">Copying passwords to the clipboard is insecure. Other apps may monitor the clipboard and capture its contents. Proceed with caution.</string>
+    <string name="do_not_show_warning">Do not show this warning again</string>
+    <string name="clipboard_dialog_positive">Continue</string>
+    <string name="clipboard_dialog_negative">Cancel</string>
+
     <!-- Miscellaneous -->
     <string name="copied_to_clipboard">Password copied to clipboard</string>
     <string name="password_gen_failed">Password generation failed. Please contact Apta Systems.</string>
