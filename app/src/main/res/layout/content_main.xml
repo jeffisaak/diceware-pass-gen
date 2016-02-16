@@ -97,5 +97,12 @@
             android:onClick="copyToClipboard"
             android:text="@string/copy_to_clipboard" />
 
+        <Button
+            android:id="@+id/use_this_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="useThisPassword"
+            android:text="@string/use_this_password"/>
+
     </LinearLayout>
 </ScrollView>

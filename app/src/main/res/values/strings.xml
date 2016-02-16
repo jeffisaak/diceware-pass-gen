@@ -20,6 +20,7 @@
     <!-- Buttons -->
     <string name="new_password">New password</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
+    <string name="use_this_password">Use this password</string>
 
     <!-- Placeholders for the password while it's generating or after it failed -->
     <string name="no_password">Please tap the \'new password\' button to start entering die rolls.</string>

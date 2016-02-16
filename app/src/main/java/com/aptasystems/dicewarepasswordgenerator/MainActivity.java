@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String INTENT_RESULT_KEY_PASSWORD = "password";
 
     private static final String PREF_HIDE_CLIPBOARD_WARNING = "hideClipboardWarning";
+    private static final String PREF_DEFAULT_SOURCE = "defaultSource";
+    private static final String PREF_DEFAULT_PASSWORD_LENGTH = "defaultPasswordLength";
 
     // Widgets.
     private CoordinatorLayout _coordinatorLayout;
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private SeekBar _passwordLengthSeekBar;
     private TextView _passwordTextView;
     private Button _copyToClipboardButton;
+    private Button _useThisPasswordButton;
 
     private GeneratePasswordTask _generatePasswordTask;
 
@@ -88,6 +91,15 @@ public class MainActivity extends AppCompatActivity {
         _passwordLengthSeekBar = (SeekBar) findViewById(R.id.seek_bar_password_length);
         _passwordTextView = (TextView) findViewById(R.id.password_text_view);
         _copyToClipboardButton = (Button) findViewById(R.id.copy_to_clipboard);
+        _useThisPasswordButton = (Button) findViewById(R.id.use_this_password);
+
+        // Set visibility of the copy to clipboard button or the use this password button,
+        // depending on whether we were called with startActivity or startActivityForResult.
+        if (getCallingActivity() == null) {
+            _useThisPasswordButton.setVisibility(View.GONE);
+        } else {
+            _copyToClipboardButton.setVisibility(View.GONE);
+        }
 
         // Set up our seekbar listener.
         _passwordLengthSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -99,16 +111,21 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
+                // Update the text that shows the brute-force estimate.
                 updatePasswordLengthInfo();
+
+                // Update the password length preference.
+                getPreferences(MODE_PRIVATE).edit().putInt(PREF_DEFAULT_PASSWORD_LENGTH, progress + 1).commit();
 
                 // Android PRNG: Generate a new password.
                 // Random.org: Do nothing.
-                // Dice: Show the 'no password' message and disable the clipboard button.
+                // Dice: Show the 'no password' message and disable the clipboard/use button.
                 if (_androidPrngRadioButton.isChecked()) {
                     newAndroidPassword();
                 } else if (_diceRadioButton.isChecked()) {
                     _passwordTextView.setText(getResources().getString(R.string.no_password));
                     _copyToClipboardButton.setEnabled(false);
+                    _useThisPasswordButton.setEnabled(false);
                 }
             }
 
@@ -128,24 +145,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Handle restoration from a saved instance state: which radio button is checked and the selected password length.
         int radioButtonChecked = R.id.radio_android_prng;
         int passwordLength = DEFAULT_PASSWORD_LENGTH;
         if (savedInstanceState != null) {
-            radioButtonChecked = savedInstanceState.getInt(STATE_RANDOM_MECHANISM, R.id.radio_android_prng);
-            passwordLength = savedInstanceState.getInt(STATE_PASSWORD_LENGTH, DEFAULT_PASSWORD_LENGTH);
+
+            // Handle restoration from a saved instance state: which radio button is checked and the selected password length.
+            radioButtonChecked = savedInstanceState.getInt(STATE_RANDOM_MECHANISM, radioButtonChecked);
+            passwordLength = savedInstanceState.getInt(STATE_PASSWORD_LENGTH, passwordLength);
+
+        } else {
+
+            // If there was no saved instance state, attempt to get the default radio button
+            // selection and password length from the preferences.
+            radioButtonChecked = getPreferences(MODE_PRIVATE).getInt(PREF_DEFAULT_SOURCE, radioButtonChecked);
+            passwordLength = getPreferences(MODE_PRIVATE).getInt(PREF_DEFAULT_PASSWORD_LENGTH, passwordLength);
+
         }
 
         // Check the appropriate radio button, set the random mechanism, and set the password length seek bar.
+        _passwordLengthSeekBar.setProgress(passwordLength - 1);
         ((RadioButton) findViewById(radioButtonChecked)).setChecked(true);
         setRandomMechanism(radioButtonChecked);
-        _passwordLengthSeekBar.setProgress(passwordLength - 1);
 
         // Restore the password if applicable.
         if (savedInstanceState != null) {
             String password = savedInstanceState.getString(STATE_PASSWORD);
             _passwordTextView.setText(password);
             _copyToClipboardButton.setEnabled(true);
+            _useThisPasswordButton.setEnabled(true);
         }
 
         _justRotated = false;
@@ -216,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
                         if (!isCancelled() && s != null) {
                             _passwordTextView.setText(s);
                             _copyToClipboardButton.setEnabled(true);
+                            _useThisPasswordButton.setEnabled(true);
                         } else if (s == null) {
                             _passwordTextView.setText(getResources().getText(R.string.password_gen_failed));
                         }
@@ -274,6 +302,18 @@ public class MainActivity extends AppCompatActivity {
 
         Snackbar
                 .make(_coordinatorLayout, R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Put the password into the result intent and finish the activity.
+     *
+     * @param view
+     */
+    public void useThisPassword(View view) {
+        Intent result = new Intent();
+        result.putExtra(INTENT_RESULT_KEY_PASSWORD, _passwordTextView.getText().toString());
+        setResult(RESULT_OK, result);
+        finish();
     }
 
     /**
@@ -349,6 +389,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setRandomMechanism(int viewId) {
+
+        if (!_justRotated) {
+            getPreferences(MODE_PRIVATE).edit().putInt(PREF_DEFAULT_SOURCE, viewId).commit();
+        }
+
         switch (viewId) {
             case R.id.radio_android_prng:
                 if (!_justRotated) {
@@ -357,6 +402,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.radio_random_org:
                 _copyToClipboardButton.setEnabled(false);
+                _useThisPasswordButton.setEnabled(false);
                 if (!_justRotated) {
                     newRandomOrgPassword();
                 }
@@ -365,6 +411,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!_justRotated) {
                     _passwordTextView.setText(getResources().getString(R.string.no_password));
                     _copyToClipboardButton.setEnabled(false);
+                    _useThisPasswordButton.setEnabled(false);
                 }
                 break;
         }
@@ -409,6 +456,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!isCancelled() && s != null) {
                     _passwordTextView.setText(s);
                     _copyToClipboardButton.setEnabled(true);
+                    _useThisPasswordButton.setEnabled(true);
                 } else if (s == null) {
                     _passwordTextView.setText(getResources().getText(R.string.password_gen_failed));
                 }
@@ -427,6 +475,7 @@ public class MainActivity extends AppCompatActivity {
 
         _passwordTextView.setText(getResources().getString(R.string.random_org_fetching));
         _copyToClipboardButton.setEnabled(false);
+        _useThisPasswordButton.setEnabled(false);
 
         if (_generatePasswordTask != null && !_generatePasswordTask.isCancelled()) {
             _generatePasswordTask.cancel(true);
@@ -455,6 +504,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         _passwordTextView.setText(getResources().getString(R.string.random_org_error));
                         _copyToClipboardButton.setEnabled(false);
+                        _useThisPasswordButton.setEnabled(false);
                     }
                 });
                 queue.add(stringRequest);
@@ -465,6 +515,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!isCancelled() && s != null) {
                     _passwordTextView.setText(s);
                     _copyToClipboardButton.setEnabled(true);
+                    _useThisPasswordButton.setEnabled(true);
                 } else if (s == null) {
                     _passwordTextView.setText(getResources().getText(R.string.password_gen_failed));
                 }
@@ -487,17 +538,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_CODE_ENTER_DICE_VALUES);
     }
 
-    /**
-     * onBackPressed overridden to allow other activities to call this one to generate a password
-     * and retrieve the result.
-     */
-    @Override
-    public void onBackPressed() {
-        Intent result = new Intent();
-        result.putExtra(INTENT_RESULT_KEY_PASSWORD, _passwordTextView.getText().toString());
-        setResult(RESULT_OK, result);
-        super.onBackPressed();
-    }
 }
 
 
