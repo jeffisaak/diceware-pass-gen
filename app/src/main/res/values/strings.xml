@@ -68,6 +68,8 @@
     <!-- HelpActivity -->
     <string name="help_diceware_title">What is Diceware?</string>
     <string name="help_diceware_content">From Wikipedia (https://en.wikipedia.org/wiki/Diceware): \'Diceware is a method for creating passphrases, passwords, and other cryptographic variables using an ordinary die from a pair of dice as a hardware random number generator. For each word in the passphrase, five rolls of the dice are required. The numbers from 1 to 6 that come up in the rolls are assembled as a five-digit number, e.g. 43146. That number is then used to look up a word in a word list.\'</string>
+    <string name="help_why_diceware_title">Why Diceware?</string>
+    <string name="help_why_diceware_content">Paraphrased from the Diceware Passphrase Home Page (http://world.std.com/~reinhold/diceware.html): Diceware is easy to learn and use, very secure, transparent, prescriptive, and free.</string>
     <string name="help_brute_force_title">What is a brute force attack?</string>
     <string name="help_brute_force_content">From Wikipedia (https://en.wikipedia.org/wiki/Brute-force_attack): \'In cryptography, a brute-force attack, or exhaustive key search, is a cryptanalytic attack that can, in theory, be used against any encrypted data ... It consists of systematically checking all possible keys or passwords until the correct one is found. In the worst case, this would involve traversing the entire search space.</string>
     <string name="help_time_title">How long is a millennium?</string>

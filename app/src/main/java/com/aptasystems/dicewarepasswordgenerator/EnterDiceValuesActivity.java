@@ -74,9 +74,6 @@ public class EnterDiceValuesActivity extends AppCompatActivity {
             onBackPressed();
             return true;
         }
-//        else if (id == R.id.action_help) {
-//            return true;
-//        }
 
         return super.onOptionsItemSelected(item);
     }

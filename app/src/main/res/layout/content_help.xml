@@ -24,11 +24,26 @@
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:autoLink="web"
+            android:paddingTop="8dp"
+            android:text="@string/help_diceware_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
-            android:text="@string/help_diceware_content"
+            android:text="@string/help_why_diceware_title"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:paddingTop="8dp"
+            android:text="@string/help_why_diceware_content"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
         <TextView
@@ -39,12 +54,13 @@
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <TextView
-            android:autoLink="web"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:autoLink="web"
             android:paddingTop="8dp"
             android:text="@string/help_brute_force_content"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
+
 
         <TextView
             android:layout_width="wrap_content"

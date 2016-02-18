@@ -2,6 +2,7 @@ package com.aptasystems.dicewarepasswordgenerator;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -98,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Set visibility of the copy to clipboard button or the use this password button,
         // depending on whether we were called with startActivity or startActivityForResult.
-        if (getCallingActivity() == null) {
+        ComponentName callingActivity = getCallingActivity();
+        if (callingActivity == null || callingActivity.getClassName().compareTo(MainActivity.class.getName()) == 0) {
             _useThisPasswordButton.setVisibility(View.GONE);
         } else {
             _copyToClipboardButton.setVisibility(View.GONE);
@@ -185,6 +187,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         _justRotated = false;
+    }
+
+    @Override
+    protected void onResume() {
+
+        // Update the text that shows the brute-force estimate.
+        updatePasswordLengthInfo();
+
+        super.onResume();
     }
 
     @Override
