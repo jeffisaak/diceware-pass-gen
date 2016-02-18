@@ -3,6 +3,7 @@
     <!-- App and activity titles -->
     <string name="app_name">Diceware Password Generator</string>
     <string name="title_activity_enter_dice_values">Dice Roll Entry</string>
+    <string name="title_activity_help">Diceware Questions and Answers</string>
 
     <!-- MainActivity menu -->
     <string name="action_help">Help</string>
@@ -35,10 +36,11 @@
     <string name="die_roll_info">Please roll %1$d six-sided dice (all at once or in batches) and tap the results on the dice images below.</string>
 
     <!-- For building the password length information text -->
-    <string name="password_length_info">A Diceware password of the selected length can resist a brute force attack from a well-funded adversary (such as the NSA circa 2013) for %1$s (one trillion guesses per second assumed).</string>
-    <string name="password_length_segment">approximately %1$d %2$s</string>
-    <string name="password_length_forever">the rest of time</string>
-    <string name="password_length_zero">less than a second</string>
+    <string name="password_length_info">A Diceware password of the selected length can resist a brute force attack from a well-funded adversary (such as the NSA circa 2013) for:</string>
+    <string name="password_length">%1$s</string>
+    <string name="password_length_segment">%1$s %2$s (on average).</string>
+    <string name="password_length_forever">The rest of time.</string>
+    <string name="password_length_zero">Less than a second.</string>
     <string name="duration_seconds">seconds</string>
     <string name="duration_minutes">minutes</string>
     <string name="duration_hours">hours</string>
@@ -46,11 +48,11 @@
     <string name="duration_years">years</string>
     <string name="duration_decades">decades</string>
     <string name="duration_centuries">centuries</string>
-    <string name="duration_millenia">millennia</string>
-    <string name="duration_ages">ages</string>
-    <string name="duration_epochs">epochs</string>
-    <string name="duration_eras">eras</string>
-    <string name="duration_eons">eons</string>
+    <string name="duration_millennia">millennia</string>
+    <string name="duration_thousand_millennia">thousand millennia</string>
+    <string name="duration_million_millennia">million millennia</string>
+    <string name="duration_billion_millennia">billion millennia</string>
+    <string name="duration_trillion_millennia">trillion millennia</string>
 
     <!-- Clipboard warning dialog -->
     <string name="clipboard_warning_title">The clipboard is not secure!</string>
@@ -62,6 +64,25 @@
     <!-- Miscellaneous -->
     <string name="copied_to_clipboard">Password copied to clipboard</string>
     <string name="password_gen_failed">Password generation failed. Please contact Apta Systems.</string>
+
+    <!-- HelpActivity -->
+    <string name="help_diceware_title">What is Diceware?</string>
+    <string name="help_diceware_content">From Wikipedia (https://en.wikipedia.org/wiki/Diceware): \'Diceware is a method for creating passphrases, passwords, and other cryptographic variables using an ordinary die from a pair of dice as a hardware random number generator. For each word in the passphrase, five rolls of the dice are required. The numbers from 1 to 6 that come up in the rolls are assembled as a five-digit number, e.g. 43146. That number is then used to look up a word in a word list.\'</string>
+    <string name="help_brute_force_title">What is a brute force attack?</string>
+    <string name="help_brute_force_content">From Wikipedia (https://en.wikipedia.org/wiki/Brute-force_attack): \'In cryptography, a brute-force attack, or exhaustive key search, is a cryptanalytic attack that can, in theory, be used against any encrypted data ... It consists of systematically checking all possible keys or passwords until the correct one is found. In the worst case, this would involve traversing the entire search space.</string>
+    <string name="help_time_title">How long is a millennium?</string>
+    <string name="help_time_content">A millennium is 1,000 years. A century is 100 years.</string>
+    <string name="help_estimate_title">How are the attack times estimated?</string>
+    <string name="help_estimate_content_1">First, an estimate of the number of guesses that can be made per second must be produced. Edward Snowden told the world in 2013 that the NSA is capable of making one trillion guesses per second.</string>
+    <string name="help_estimate_content_2">Second, the number of possible passwords must be calculated. This is done by taking the number of words in the word list (there are 7,776) and raising it to the power of the number of words in the password (the password length).</string>
+    <string name="help_estimate_content_3">Finally, we divide the number of possible passwords by the guess rate and then divide that number by two to determine the average number of seconds until the brute force attack is successful.</string>
+    <string name="help_estimate_content_4">For example, a five-word Diceware password will resist a brute force attack for 14 million seconds on average (just over 164 days): 7,776^5 / 1,000,000,000,000 / 2 = 14,215,144.015</string>
+    <string name="help_estimate_content_5">A password that can survive a brute force attack for over three millennia (password length of six words) now may not be able to do so in several years. If the guessing speed increases by several orders of magnitude, that same password may only survive a brute force attack for three years.</string>
+    <string name="help_open_source_title">Open source?</string>
+    <string name="help_open_source_content_1">This application is open source. That means that anybody can go look at the source code, and if they want to, use the source code in their own projects. This also means that one can look at the code and see exactly what the application is doing and verify that it isn\'t (for example) sending the passwords it generates back to me, or the NSA, or anywhere. I don\'t trust any security/privacy related application that isn\'t open source, and you shouldn\'t either.</string>
+    <string name="help_open_source_content_2">Please note that the source code has not been audited by an independent third party. If you or your organisation are interested in performing an audit, please contact me, my email address may be found at the bottom of this page.</string>
+    <string name="help_who_title">Who wrote this app?</string>
+    <string name="help_who_content">My name is Jeff Isaak. My background is software development. I am passionate about online security and privacy, personal finance, and garlic. I want to help people reclaim their privacy through clever software. My email address is jisaak@aptasystems.com.</string>
 
     <!-- Accessibility -->
     <string name="accessibility_die_face_one">Die face: one</string>

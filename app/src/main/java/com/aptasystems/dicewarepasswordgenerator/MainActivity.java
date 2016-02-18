@@ -30,6 +30,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.security.SecureRandom;
+import java.text.NumberFormat;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     // Widgets.
     private CoordinatorLayout _coordinatorLayout;
     private TextView _passwordLengthInfo;
+    private TextView _passwordLength;
     private RadioButton _androidPrngRadioButton;
     private RadioButton _randomOrgRadioButton;
     private RadioButton _diceRadioButton;
@@ -85,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         // Grab our widgets to use later.
         _coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
         _passwordLengthInfo = (TextView) findViewById(R.id.text_view_password_length_info);
+        _passwordLength = (TextView) findViewById(R.id.text_view_password_length);
         _androidPrngRadioButton = (RadioButton) findViewById(R.id.radio_android_prng);
         _randomOrgRadioButton = (RadioButton) findViewById(R.id.radio_random_org);
         _diceRadioButton = (RadioButton) findViewById(R.id.radio_dice);
@@ -162,6 +165,12 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        // It is possible for the saved button id to not match the buttons (due to app code changes).
+        if (radioButtonChecked != R.id.radio_android_prng && radioButtonChecked != R.id.radio_dice && radioButtonChecked != R.id.radio_random_org) {
+            // Default to Android PRNG.
+            radioButtonChecked = R.id.radio_android_prng;
+        }
+
         // Check the appropriate radio button, set the random mechanism, and set the password length seek bar.
         _passwordLengthSeekBar.setProgress(passwordLength - 1);
         ((RadioButton) findViewById(radioButtonChecked)).setChecked(true);
@@ -207,9 +216,11 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_help) {
-//            return true;
-//        }
+        if (id == R.id.action_help) {
+            Intent intent = new Intent(this, HelpActivity.class);
+            startActivity(intent);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -328,7 +339,9 @@ public class MainActivity extends AppCompatActivity {
         double permutations = Math.pow(wordCount, (double) passwordLength);
         double timeForAllPermutations = permutations / NSA_GUESSES_PER_SECOND;
 
-        double[] timeDivisors = new double[]{2.0, 60.0, 60.0, 24.0, 365.25, 10.0, 10.0, 10.0, 1000.0, 10.0, 10.0, 5.0};
+        // First time divisor is two, as we take half of the total time to brute force the
+        // entire password space as an estimate.
+        double[] timeDivisors = new double[]{2.0, 60.0, 60.0, 24.0, 365.25, 10.0, 10.0, 10.0, 1000.0, 1000.0, 1000.0, 1000.0};
         int[] timeStrings = new int[]{
                 R.string.duration_seconds,
                 R.string.duration_minutes,
@@ -337,11 +350,11 @@ public class MainActivity extends AppCompatActivity {
                 R.string.duration_years,
                 R.string.duration_decades,
                 R.string.duration_centuries,
-                R.string.duration_millenia,
-                R.string.duration_ages,
-                R.string.duration_epochs,
-                R.string.duration_eras,
-                R.string.duration_eons};
+                R.string.duration_millennia,
+                R.string.duration_thousand_millennia,
+                R.string.duration_million_millennia,
+                R.string.duration_billion_millennia,
+                R.string.duration_trillion_millennia,};
         double unitThreshold = 1.0;
         double largestThreshold = 1000.0;
         double[] timeResults = new double[timeDivisors.length];
@@ -364,7 +377,7 @@ public class MainActivity extends AppCompatActivity {
         if (text == null) {
             for (int ii = timeDivisors.length - 1; ii >= 0; ii--) {
                 if (timeResults[ii] >= unitThreshold) {
-                    text = String.format(res.getString(R.string.password_length_segment), (int) timeResults[ii], res.getString(timeStrings[ii]));
+                    text = String.format(res.getString(R.string.password_length_segment), NumberFormat.getIntegerInstance().format((int) timeResults[ii]), res.getString(timeStrings[ii]));
                     break;
                 }
             }
@@ -375,8 +388,8 @@ public class MainActivity extends AppCompatActivity {
             text = res.getString(R.string.password_length_zero);
         }
 
-        _passwordLengthInfo.setText(String.format(res.getString(R.string.password_length_info), text));
-        _passwordLengthInfo.setVisibility(View.VISIBLE);
+        _passwordLength.setText(String.format(res.getString(R.string.password_length), text));
+        _passwordLength.setVisibility(View.VISIBLE);
     }
 
     /**
