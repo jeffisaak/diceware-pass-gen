@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -32,7 +33,9 @@ import com.android.volley.toolbox.Volley;
 
 import java.security.SecureRandom;
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -512,7 +515,6 @@ public class MainActivity extends AppCompatActivity {
                 String url = String.format(res.getString(R.string.random_org_url), count);
 
                 RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                         new Response.Listener<String>() {
                             @Override
