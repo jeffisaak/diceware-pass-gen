@@ -532,7 +532,15 @@ public class MainActivity extends AppCompatActivity {
                         _copyToClipboardButton.setEnabled(false);
                         _useThisPasswordButton.setEnabled(false);
                     }
-                });
+                }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        // random.org has been responding with 503s if there is no user agent set here.
+                        Map<String, String> headers = new HashMap<>();
+                        headers.put("User-Agent", "volley/0");
+                        return headers;
+                    }
+                };
                 queue.add(stringRequest);
             }
 
