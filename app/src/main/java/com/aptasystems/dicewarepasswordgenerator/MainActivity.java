@@ -48,12 +48,14 @@ public class MainActivity extends AppCompatActivity {
     private static final String STATE_RANDOM_MECHANISM = "randomMechanism";
     private static final String STATE_PASSWORD_LENGTH = "passwordLength";
     private static final String STATE_PASSWORD = "password";
+    private static final String STATE_WORDLIST_SOURCE = "wordlistSource";
 
     private static final String INTENT_RESULT_KEY_PASSWORD = "password";
 
     private static final String PREF_HIDE_CLIPBOARD_WARNING = "hideClipboardWarning";
     private static final String PREF_DEFAULT_SOURCE = "defaultSource";
     private static final String PREF_DEFAULT_PASSWORD_LENGTH = "defaultPasswordLength";
+    private static final String PREF_DEFAULT_WORDLIST_SOURCE = "defaultWordlistSource";
 
     // Widgets.
     private CoordinatorLayout _coordinatorLayout;
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton _androidPrngRadioButton;
     private RadioButton _randomOrgRadioButton;
     private RadioButton _diceRadioButton;
+    private RadioButton _reinholdRadioButton;
+    private RadioButton _effRadioButton;
     private SeekBar _passwordLengthSeekBar;
     private TextView _passwordTextView;
     private Button _copyToClipboardButton;
@@ -95,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
         _androidPrngRadioButton = (RadioButton) findViewById(R.id.radio_android_prng);
         _randomOrgRadioButton = (RadioButton) findViewById(R.id.radio_random_org);
         _diceRadioButton = (RadioButton) findViewById(R.id.radio_dice);
+        _reinholdRadioButton = (RadioButton) findViewById(R.id.radio_reinhold);
+        _effRadioButton = (RadioButton) findViewById(R.id.radio_eff);
         _passwordLengthSeekBar = (SeekBar) findViewById(R.id.seek_bar_password_length);
         _passwordTextView = (TextView) findViewById(R.id.password_text_view);
         _copyToClipboardButton = (Button) findViewById(R.id.copy_to_clipboard);
@@ -155,11 +161,13 @@ public class MainActivity extends AppCompatActivity {
 
         int radioButtonChecked = R.id.radio_android_prng;
         int passwordLength = DEFAULT_PASSWORD_LENGTH;
+        int sourceRadioButtonChecked = R.id.radio_reinhold;
         if (savedInstanceState != null) {
 
             // Handle restoration from a saved instance state: which radio button is checked and the selected password length.
             radioButtonChecked = savedInstanceState.getInt(STATE_RANDOM_MECHANISM, radioButtonChecked);
             passwordLength = savedInstanceState.getInt(STATE_PASSWORD_LENGTH, passwordLength);
+            sourceRadioButtonChecked = savedInstanceState.getInt(STATE_WORDLIST_SOURCE, sourceRadioButtonChecked);
 
         } else {
 
@@ -167,19 +175,25 @@ public class MainActivity extends AppCompatActivity {
             // selection and password length from the preferences.
             radioButtonChecked = getPreferences(MODE_PRIVATE).getInt(PREF_DEFAULT_SOURCE, radioButtonChecked);
             passwordLength = getPreferences(MODE_PRIVATE).getInt(PREF_DEFAULT_PASSWORD_LENGTH, passwordLength);
-
+            sourceRadioButtonChecked = getPreferences(MODE_PRIVATE).getInt(PREF_DEFAULT_WORDLIST_SOURCE, sourceRadioButtonChecked);
         }
 
-        // It is possible for the saved button id to not match the buttons (due to app code changes).
+        // It is possible for the saved button IDs to not match the buttons (due to app code changes).
         if (radioButtonChecked != R.id.radio_android_prng && radioButtonChecked != R.id.radio_dice && radioButtonChecked != R.id.radio_random_org) {
             // Default to Android PRNG.
             radioButtonChecked = R.id.radio_android_prng;
+        }
+        if (sourceRadioButtonChecked != R.id.radio_reinhold && sourceRadioButtonChecked != R.id.radio_eff) {
+            // Default to Android PRNG.
+            sourceRadioButtonChecked = R.id.radio_reinhold;
         }
 
         // Check the appropriate radio button, set the random mechanism, and set the password length seek bar.
         _passwordLengthSeekBar.setProgress(passwordLength - 1);
         ((RadioButton) findViewById(radioButtonChecked)).setChecked(true);
+        ((RadioButton) findViewById(sourceRadioButtonChecked)).setChecked(true);
         setRandomMechanism(radioButtonChecked);
+        setWordlistSource(sourceRadioButtonChecked);
 
         // Restore the password if applicable.
         if (savedInstanceState != null) {
@@ -205,17 +219,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        int radioButtonChecked = 0;
+        int radioButtonChecked = 0, sourceRadioButtonChecked = 0;
         if (_androidPrngRadioButton.isChecked()) {
             radioButtonChecked = _androidPrngRadioButton.getId();
         } else if (_randomOrgRadioButton.isChecked()) {
             radioButtonChecked = _randomOrgRadioButton.getId();
         } else if (_diceRadioButton.isChecked()) {
             radioButtonChecked = _diceRadioButton.getId();
+        } else if (_reinholdRadioButton.isChecked()) {
+            sourceRadioButtonChecked = _reinholdRadioButton.getId();
+        } else if (_effRadioButton.isChecked()) {
+            sourceRadioButtonChecked = _effRadioButton.getId();
         }
         outState.putInt(STATE_RANDOM_MECHANISM, radioButtonChecked);
         outState.putInt(STATE_PASSWORD_LENGTH, _passwordLengthSeekBar.getProgress());
         outState.putString(STATE_PASSWORD, _passwordTextView.getText().toString());
+        outState.putInt(STATE_WORDLIST_SOURCE, sourceRadioButtonChecked);
     }
 
     @Override
@@ -439,6 +458,30 @@ public class MainActivity extends AppCompatActivity {
                     _passwordTextView.setText(getResources().getString(R.string.no_password));
                     _copyToClipboardButton.setEnabled(false);
                     _useThisPasswordButton.setEnabled(false);
+                }
+                break;
+        }
+    }
+
+    public void setWordlistSource(View view) {
+        setWordlistSource(view.getId());
+    }
+
+    private void setWordlistSource(int viewId) {
+
+        if (!_justRotated) {
+            getPreferences(MODE_PRIVATE).edit().putInt(PREF_DEFAULT_WORDLIST_SOURCE, viewId).commit();
+        }
+
+        switch (viewId) {
+            case R.id.radio_reinhold:
+                if (!_justRotated) {
+                    newAndroidPassword();
+                }
+                break;
+            case R.id.radio_eff:
+                if (!_justRotated) {
+                    newRandomOrgPassword();
                 }
                 break;
         }

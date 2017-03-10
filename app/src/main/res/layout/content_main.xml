@@ -62,6 +62,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
+            android:text="@string/heading_wordlist_source"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp">
+
+            <RadioButton
+                android:id="@+id/radio_reinhold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="setWordlistSource"
+                android:text="@string/radio_reinhold"/>
+
+            <RadioButton
+                android:id="@+id/radio_eff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="setWordlistSource"
+                android:text="@string/radio_eff"/>
+
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
             android:text="@string/heading_random_number_source"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 

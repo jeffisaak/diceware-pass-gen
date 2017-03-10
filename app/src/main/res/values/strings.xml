@@ -9,11 +9,14 @@
     <string name="action_help">Help</string>
 
     <!-- Headings in the main activity -->
+    <string name="heading_wordlist_source">Wordlist source</string>
     <string name="heading_random_number_source">Source of random numbers</string>
     <string name="heading_password_length">Password length</string>
     <string name="heading_password">Password</string>
 
     <!-- Radio buttons -->
+    <string name="radio_reinhold">Reinhold\'s</string>
+    <string name="radio_eff">EFF (English-only)</string>
     <string name="radio_android_prng">Android pseudo-random number generator</string>
     <string name="radio_random_org">Random.org atmospheric noise</string>
     <string name="radio_dice">Dice</string>
