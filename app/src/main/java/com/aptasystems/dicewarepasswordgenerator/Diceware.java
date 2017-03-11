@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This singleton creates Diceware passwords.  It looks for diceware wordlists in the raw folder.
+ * This abstract class creates Diceware passwords.  It looks for diceware wordlists in the raw folder.
  */
 public abstract class Diceware {
 
@@ -108,8 +108,18 @@ public abstract class Diceware {
         }
     }
 
+    /**
+     * Get the wordlist raw resource ID.
+     *
+     * @return
+     */
     protected abstract int getWordlistResource();
 
+    /**
+     * Get the number of dice throws per word.
+     *
+     * @return
+     */
     protected abstract int getDicePerWord();
 
 }
