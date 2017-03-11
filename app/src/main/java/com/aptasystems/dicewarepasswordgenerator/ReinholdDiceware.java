@@ -13,4 +13,9 @@ public class ReinholdDiceware extends Diceware {
     protected int getWordlistResource() {
         return R.raw.diceware_wordlist;
     }
+
+    @Override
+    protected int getDicePerWord() {
+        return 5;
+    }
 }

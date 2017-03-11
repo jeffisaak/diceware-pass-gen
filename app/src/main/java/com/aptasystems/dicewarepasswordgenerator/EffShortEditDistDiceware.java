@@ -13,4 +13,9 @@ public class EffShortEditDistDiceware extends Diceware {
     protected int getWordlistResource() {
         return R.raw.eff_short_wordlist_2_0;
     }
+
+    @Override
+    protected int getDicePerWord() {
+        return 4;
+    }
 }

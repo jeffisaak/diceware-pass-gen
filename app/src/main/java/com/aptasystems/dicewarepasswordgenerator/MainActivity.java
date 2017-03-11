@@ -630,7 +630,7 @@ public class MainActivity extends AppCompatActivity {
     private void newDicePassword() {
         // Jump over to the dice activity to collect the numbers.
         Intent intent = new Intent(this, EnterDiceValuesActivity.class);
-        intent.putExtra(EnterDiceValuesActivity.EXTRA_REQUIRED_ROLL_COUNT, (_passwordLengthSeekBar.getProgress() + 1) * Diceware.DICE_PER_WORD);
+        intent.putExtra(EnterDiceValuesActivity.EXTRA_REQUIRED_ROLL_COUNT, (_passwordLengthSeekBar.getProgress() + 1) * _diceware.getDicePerWord());
         startActivityForResult(intent, REQUEST_CODE_ENTER_DICE_VALUES);
     }
 

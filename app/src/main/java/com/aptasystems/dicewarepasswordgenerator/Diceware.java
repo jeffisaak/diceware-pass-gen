@@ -17,8 +17,6 @@ import java.util.Map;
  */
 public abstract class Diceware {
 
-    public static final int DICE_PER_WORD = 5;
-
     private Map<Integer, String> _wordMap;
 
     public Diceware(Context context) {
@@ -78,7 +76,7 @@ public abstract class Diceware {
         StringBuilder numberBuilder = new StringBuilder();
         for (Integer randomNumber : randomNumbers) {
             numberBuilder.append(randomNumber);
-            if (numberBuilder.length() == DICE_PER_WORD) {
+            if (numberBuilder.length() == getDicePerWord()) {
                 if (withSpaces && passwordBuilder.length() > 0) {
                     passwordBuilder.append(" ");
                 }
@@ -111,5 +109,7 @@ public abstract class Diceware {
     }
 
     protected abstract int getWordlistResource();
+
+    protected abstract int getDicePerWord();
 
 }

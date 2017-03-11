@@ -28,7 +28,7 @@ public abstract class GeneratePasswordTask extends AsyncTask<Integer, Void, Stri
     @Override
     protected String doInBackground(Integer... params) {
 
-        int numberCount = params[0] * Diceware.DICE_PER_WORD;
+        int numberCount = params[0] * _diceware.getDicePerWord();
         generateRandomNumbers(numberCount);
 
         if (isCancelled()) {
