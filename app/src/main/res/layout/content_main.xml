@@ -68,7 +68,8 @@
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="8dp">
+            android:paddingTop="8dp"
+            android:orientation="vertical">
 
             <RadioButton
                 android:id="@+id/radio_reinhold"
@@ -83,6 +84,20 @@
                 android:layout_height="wrap_content"
                 android:onClick="setWordlistSource"
                 android:text="@string/radio_eff"/>
+
+            <RadioButton
+                android:id="@+id/radio_eff_short"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="setWordlistSource"
+                android:text="@string/radio_eff_short"/>
+
+            <RadioButton
+                android:id="@+id/radio_eff_short_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="setWordlistSource"
+                android:text="@string/radio_eff_short_2"/>
 
         </RadioGroup>
 

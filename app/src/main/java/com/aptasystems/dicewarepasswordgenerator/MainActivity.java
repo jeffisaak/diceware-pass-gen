@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton _diceRadioButton;
     private RadioButton _reinholdRadioButton;
     private RadioButton _effRadioButton;
+    private RadioButton _effShortRadioButton;
+    private RadioButton _effShorterRadioButton;
     private SeekBar _passwordLengthSeekBar;
     private TextView _passwordTextView;
     private Button _copyToClipboardButton;
@@ -102,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
         _diceRadioButton = (RadioButton) findViewById(R.id.radio_dice);
         _reinholdRadioButton = (RadioButton) findViewById(R.id.radio_reinhold);
         _effRadioButton = (RadioButton) findViewById(R.id.radio_eff);
+        _effShortRadioButton = (RadioButton) findViewById(R.id.radio_eff_short);
+        _effShorterRadioButton = (RadioButton) findViewById(R.id.radio_eff_short_2);
         _passwordLengthSeekBar = (SeekBar) findViewById(R.id.seek_bar_password_length);
         _passwordTextView = (TextView) findViewById(R.id.password_text_view);
         _copyToClipboardButton = (Button) findViewById(R.id.copy_to_clipboard);
@@ -184,7 +188,8 @@ public class MainActivity extends AppCompatActivity {
             // Default to Android PRNG.
             radioButtonChecked = R.id.radio_android_prng;
         }
-        if (wordlistRadioButtonChecked != R.id.radio_reinhold && wordlistRadioButtonChecked != R.id.radio_eff) {
+        if (wordlistRadioButtonChecked != R.id.radio_reinhold && wordlistRadioButtonChecked != R.id.radio_eff
+                && wordlistRadioButtonChecked != R.id.radio_eff_short && wordlistRadioButtonChecked != R.id.radio_eff_short_2) {
             // Default to Android wordlist.
             wordlistRadioButtonChecked = R.id.radio_reinhold;
         }
@@ -236,6 +241,10 @@ public class MainActivity extends AppCompatActivity {
             wordlistRadioButtonChecked = _reinholdRadioButton.getId();
         } else if (_effRadioButton.isChecked()) {
             wordlistRadioButtonChecked = _effRadioButton.getId();
+        } else if (_effShortRadioButton.isChecked()) {
+            wordlistRadioButtonChecked = _effShortRadioButton.getId();
+        } else if (_effShorterRadioButton.isChecked()) {
+            wordlistRadioButtonChecked = _effShorterRadioButton.getId();
         }
         outState.putInt(STATE_RANDOM_MECHANISM, radioButtonChecked);
         outState.putInt(STATE_PASSWORD_LENGTH, _passwordLengthSeekBar.getProgress());
@@ -487,6 +496,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.radio_eff:
                 _diceware = new EffLongDiceware(this);
+                break;
+            case R.id.radio_eff_short:
+                _diceware = new EffShortDiceware(this);
+                break;
+            case R.id.radio_eff_short_2:
+                _diceware = new EffShortEditDistDiceware(this);
                 break;
         }
     }

@@ -16,7 +16,9 @@
 
     <!-- Radio buttons -->
     <string name="radio_reinhold">Reinhold\'s</string>
-    <string name="radio_eff">EFF (English-only)</string>
+    <string name="radio_eff">EFF (Long)</string>
+    <string name="radio_eff_short">EFF (Short)</string>
+    <string name="radio_eff_short_2">EFF (Short, edit distance of 3 apart)</string>
     <string name="radio_android_prng">Android pseudo-random number generator</string>
     <string name="radio_random_org">Random.org atmospheric noise</string>
     <string name="radio_dice">Dice</string>
