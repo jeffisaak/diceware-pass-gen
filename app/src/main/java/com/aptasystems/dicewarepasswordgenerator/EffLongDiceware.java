@@ -3,9 +3,9 @@ package com.aptasystems.dicewarepasswordgenerator;
 
 import android.content.Context;
 
-public class EffDiceware extends Diceware {
+public class EffLongDiceware extends Diceware {
 
-    public EffDiceware(Context context) {
+    public EffLongDiceware(Context context) {
         super(context);
     }
 

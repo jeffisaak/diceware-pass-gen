@@ -12,7 +12,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -487,7 +486,7 @@ public class MainActivity extends AppCompatActivity {
                 _diceware = new ReinholdDiceware(this);
                 break;
             case R.id.radio_eff:
-                _diceware = new EffDiceware(this);
+                _diceware = new EffLongDiceware(this);
                 break;
         }
     }
