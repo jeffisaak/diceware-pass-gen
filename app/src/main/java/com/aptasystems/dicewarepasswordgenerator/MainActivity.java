@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton _reinholdRadioButton;
     private RadioButton _effRadioButton;
     private RadioButton _effShortRadioButton;
-    private RadioButton _effShorterRadioButton;
+    private RadioButton _effShortEditDistRadioButton;
     private SeekBar _passwordLengthSeekBar;
     private TextView _passwordTextView;
     private Button _copyToClipboardButton;
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         _reinholdRadioButton = (RadioButton) findViewById(R.id.radio_reinhold);
         _effRadioButton = (RadioButton) findViewById(R.id.radio_eff);
         _effShortRadioButton = (RadioButton) findViewById(R.id.radio_eff_short);
-        _effShorterRadioButton = (RadioButton) findViewById(R.id.radio_eff_short_2);
+        _effShortEditDistRadioButton = (RadioButton) findViewById(R.id.radio_eff_short_2);
         _passwordLengthSeekBar = (SeekBar) findViewById(R.id.seek_bar_password_length);
         _passwordTextView = (TextView) findViewById(R.id.password_text_view);
         _copyToClipboardButton = (Button) findViewById(R.id.copy_to_clipboard);
@@ -243,8 +243,8 @@ public class MainActivity extends AppCompatActivity {
             wordlistRadioButtonChecked = _effRadioButton.getId();
         } else if (_effShortRadioButton.isChecked()) {
             wordlistRadioButtonChecked = _effShortRadioButton.getId();
-        } else if (_effShorterRadioButton.isChecked()) {
-            wordlistRadioButtonChecked = _effShorterRadioButton.getId();
+        } else if (_effShortEditDistRadioButton.isChecked()) {
+            wordlistRadioButtonChecked = _effShortEditDistRadioButton.getId();
         }
         outState.putInt(STATE_RANDOM_MECHANISM, radioButtonChecked);
         outState.putInt(STATE_PASSWORD_LENGTH, _passwordLengthSeekBar.getProgress());
