@@ -90,7 +90,7 @@ public abstract class Diceware {
     }
 
     /**
-     * Get the count of words in the word list.  This is typically 7,776.
+     * Get the count of words in the word list.
      *
      * @return
      */
