@@ -504,6 +504,8 @@ public class MainActivity extends AppCompatActivity {
                 _diceware = new EffShortEditDistDiceware(this);
                 break;
         }
+        // Update the text that shows the brute-force estimate.
+        updatePasswordLengthInfo();
     }
 
     /**
