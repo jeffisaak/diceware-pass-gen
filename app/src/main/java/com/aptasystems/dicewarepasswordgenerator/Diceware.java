@@ -15,24 +15,15 @@ import java.util.Map;
 /**
  * This singleton creates Diceware passwords.  It looks for diceware wordlists in the raw folder.
  */
-public class Diceware {
+public abstract class Diceware {
 
     public static final int DICE_PER_WORD = 5;
 
-    private static Diceware _instance;
-
-    public static Diceware getInstance(Context context) {
-        if (_instance == null) {
-            _instance = new Diceware(context);
-        }
-        return _instance;
-    }
-
     private Map<Integer, String> _wordMap;
 
-    private Diceware(Context context) {
+    public Diceware(Context context) {
 
-        InputStream inputStream = context.getResources().openRawResource(R.raw.diceware_wordlist);
+        InputStream inputStream = context.getResources().openRawResource(getWordlistResource());
 
         List<String> diceLines = new ArrayList<>();
 
@@ -118,5 +109,7 @@ public class Diceware {
             super(message);
         }
     }
+
+    protected abstract int getWordlistResource();
 
 }
