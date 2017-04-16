@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context=".MainActivity"
-            tools:showIn="@layout/activity_main">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical"
+              app:layout_behavior="@string/appbar_scrolling_view_behavior"
+              tools:context=".MainActivity"
+              tools:showIn="@layout/activity_main">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -33,9 +35,9 @@
             android:textColor="@color/colorAccent"/>
 
         <LinearLayout
-            android:paddingTop="8dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp">
 
             <Button
                 android:layout_width="wrap_content"
@@ -58,114 +60,131 @@
                 android:text="@string/use_this_password"/>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:text="@string/heading_wordlist_source"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-        <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:orientation="vertical">
-
-            <RadioButton
-                android:id="@+id/radio_reinhold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="setWordlistSource"
-                android:text="@string/radio_reinhold"/>
-
-            <RadioButton
-                android:id="@+id/radio_eff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="setWordlistSource"
-                android:text="@string/radio_eff"/>
-
-            <RadioButton
-                android:id="@+id/radio_eff_short"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="setWordlistSource"
-                android:text="@string/radio_eff_short"/>
-
-            <RadioButton
-                android:id="@+id/radio_eff_short_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="setWordlistSource"
-                android:text="@string/radio_eff_short_2"/>
-
-        </RadioGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:text="@string/heading_random_number_source"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-        <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp">
-
-            <RadioButton
-                android:id="@+id/radio_android_prng"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="setRandomMechanism"
-                android:text="@string/radio_android_prng"/>
-
-            <RadioButton
-                android:id="@+id/radio_random_org"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="setRandomMechanism"
-                android:text="@string/radio_random_org"/>
-
-            <RadioButton
-                android:id="@+id/radio_dice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:onClick="setRandomMechanism"
-                android:text="@string/radio_dice"/>
-
-        </RadioGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:text="@string/heading_password_length"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-        <TextView
-            android:id="@+id/text_view_password_length_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:text="@string/password_length_info"
-            android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-        <TextView
-            android:id="@+id/text_view_password_length"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:text="@string/password_length"
-            android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-        <SeekBar
-            android:id="@+id/seek_bar_password_length"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="9"
-            android:paddingTop="16dp"/>
-
     </LinearLayout>
-</ScrollView>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="@string/heading_password_length"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <TextView
+                android:id="@+id/text_view_password_length_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="@string/password_length_info"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+            <TextView
+                android:id="@+id/text_view_password_length"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="@string/password_length"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+            <SeekBar
+                android:id="@+id/seek_bar_password_length"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="9"
+                android:paddingTop="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="@string/heading_wordlist_source"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="8dp">
+
+                <RadioButton
+                    android:id="@+id/radio_reinhold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="setWordlistSource"
+                    android:text="@string/radio_reinhold"/>
+
+                <RadioButton
+                    android:id="@+id/radio_eff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="setWordlistSource"
+                    android:text="@string/radio_eff"/>
+
+                <RadioButton
+                    android:id="@+id/radio_eff_short"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="setWordlistSource"
+                    android:text="@string/radio_eff_short"/>
+
+                <RadioButton
+                    android:id="@+id/radio_eff_short_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="setWordlistSource"
+                    android:text="@string/radio_eff_short_2"/>
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="@string/heading_random_number_source"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp">
+
+                <RadioButton
+                    android:id="@+id/radio_android_prng"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="setRandomMechanism"
+                    android:text="@string/radio_android_prng"/>
+
+                <RadioButton
+                    android:id="@+id/radio_random_org"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="setRandomMechanism"
+                    android:text="@string/radio_random_org"/>
+
+                <RadioButton
+                    android:id="@+id/radio_dice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:onClick="setRandomMechanism"
+                    android:text="@string/radio_dice"/>
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

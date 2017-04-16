@@ -501,7 +501,7 @@ public class MainActivity extends AppCompatActivity {
                 _diceware = new EffShortDiceware(this);
                 break;
             case R.id.radio_eff_short_2:
-                _diceware = new EffShortEditDistDiceware(this);
+                _diceware = new EffShortEditDistanceDiceware(this);
                 break;
         }
         // Update the text that shows the brute-force estimate.

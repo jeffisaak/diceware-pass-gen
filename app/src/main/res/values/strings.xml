@@ -15,10 +15,10 @@
     <string name="heading_password">Password</string>
 
     <!-- Radio buttons -->
-    <string name="radio_reinhold">Reinhold\'s</string>
-    <string name="radio_eff">EFF</string>
-    <string name="radio_eff_short">EFF (Short)</string>
-    <string name="radio_eff_short_2">EFF (Short, edit distance of 3 apart)</string>
+    <string name="radio_reinhold">Reinhold</string>
+    <string name="radio_eff">EFF (long)</string>
+    <string name="radio_eff_short">EFF (short)</string>
+    <string name="radio_eff_short_2">EFF (short, edit distance of 3 apart)</string>
     <string name="radio_android_prng">Android pseudo-random number generator</string>
     <string name="radio_random_org">Random.org atmospheric noise</string>
     <string name="radio_dice">Dice</string>
@@ -81,16 +81,22 @@
     <string name="help_time_content">A millennium is 1,000 years. A century is 100 years.</string>
     <string name="help_estimate_title">How are the attack times estimated?</string>
     <string name="help_estimate_content_1">First, an estimate of the number of guesses that can be made per second must be produced. Edward Snowden told the world in 2013 that the NSA is capable of making one trillion guesses per second.</string>
-    <string name="help_estimate_content_2">Second, the number of possible passwords must be calculated. This is done by taking the number of words in the word list (there are 7,776) and raising it to the power of the number of words in the password (the password length).</string>
+    <string name="help_estimate_content_2">Second, the number of possible passwords must be calculated. This is done by taking the number of words in the word list (there are 7,776 in the Reinhold and EFF (long) lists) and raising it to the power of the number of words in the password (the password length).</string>
     <string name="help_estimate_content_3">Finally, we divide the number of possible passwords by the guess rate and then divide that number by two to determine the average number of seconds until the brute force attack is successful.</string>
-    <string name="help_estimate_content_4">For example, a five-word Diceware password will resist a brute force attack for 14 million seconds on average (just over 164 days): 7,776^5 / 1,000,000,000,000 / 2 = 14,215,144.015</string>
+    <string name="help_estimate_content_4">For example, a five-word Diceware password (EFF (long)/Reinhold) will resist a brute force attack for 14 million seconds on average (just over 164 days): 7,776^5 / 1,000,000,000,000 / 2 = 14,215,144.015</string>
     <string name="help_estimate_content_5">A password that can survive a brute force attack for over three millennia (password length of six words) now may not be able to do so in several years. If the guessing speed increases by several orders of magnitude, that same password may only survive a brute force attack for three years.</string>
+    <string name="wordlists_title">A word on wordlists</string>
+    <string name="wordlists_content_1">When generating a passphrase you may select one of four word lists. The <b>Reinhold</b> list is the original word list by Arnold Reinhold, first published in 1995. This list contains 7,776 words, equal to the number of possible ordered rolls of five six-sided dice.</string>
+    <string name="wordlists_content_2">The Electronic Frontier Foundation has published three word lists. The <b>EFF (long)</b> list is a list of 7,776 words that offers equivalent security to the Reinhold list, but some changes have been made to the words resulting in passphrases that should be easier to type and remember.</string>
+    <string name="wordlists_content_3">The <b>EFF (short)</b> list includes the 1,296 most memorable and distinct words (four dice instead of five) in the hope that a smaller word list might offer a usability improvement for longer passphrases. Passphrases generated with this list will be weaker than the long list on a per-word basis, so in order to achieve similar security, longer passphrases must be used.</string>
+    <string name="wordlists_content_4">The <b>EFF (short, edit distance of 3 apart)</b> list is similar to the EFF (short) list but each word has a unique three-character prefix. This means that future software could auto-complete words in the passphrase after the user has typed the first three characters. Also, all words are an edit distance (https://en.wikipedia.org/wiki/Edit_distance) of at least three apart. This means that future software could correct any single typo in the user\'s passphrase.</string>
     <string name="help_open_source_title">Open source?</string>
     <string name="help_open_source_content_1">This application is open source. That means that anybody can go look at the source code, and if they want to, use the source code in their own projects. This also means that one can look at the code and see exactly what the application is doing and verify that it isn\'t (for example) sending the passwords it generates back to me, or the NSA, or anywhere. I don\'t trust any security/privacy related application that isn\'t open source, and you shouldn\'t either.</string>
     <string name="help_open_source_content_2">Please note that the source code has not been audited by an independent third party. If you or your organisation are interested in performing an audit, please contact me, my email address may be found at the bottom of this page.</string>
     <string name="help_who_title">Who wrote this app?</string>
     <string name="help_who_content_1">My name is Jeff Isaak. My background is software development. I am passionate about online security and privacy, personal finance, and garlic. I want to help people reclaim their privacy through clever software. My email address is jisaak@aptasystems.com.</string>
-    <string name="help_who_content_2">If you use this app and like it, please consider donating: https://www.jeffisaak.ca/donate</string>
+    <string name="help_who_content_2">Credit is due to Arnold Reinhold for the concept of Diceware and the original wordlist, the EFF for the alternative wordlists, and the worldwide volunteers who translate the wordlist. Thanks also to Julio Díaz for the EFF wordlist pull request.</string>
+    <string name="help_who_content_3">If you use this app, like it, and want to donate, you may do so here: https://www.jeffisaak.ca/donate</string>
 
     <!-- Accessibility -->
     <string name="accessibility_die_face_one">Die face: one</string>

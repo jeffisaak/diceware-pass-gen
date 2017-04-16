@@ -17,9 +17,9 @@ import android.content.Context;
  * find interesting uses for this list.
  * More: https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases
  */
-public class EffShortEditDistDiceware extends Diceware {
+public class EffShortEditDistanceDiceware extends Diceware {
 
-    public EffShortEditDistDiceware(Context context) {
+    public EffShortEditDistanceDiceware(Context context) {
         super(context);
     }
 
