@@ -13,26 +13,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This singleton creates Diceware passwords.  It looks for diceware wordlists in the raw folder.
+ * This abstract class creates Diceware passwords.  It looks for diceware wordlists in the raw folder.
  */
-public class Diceware {
-
-    public static final int DICE_PER_WORD = 5;
-
-    private static Diceware _instance;
-
-    public static Diceware getInstance(Context context) {
-        if (_instance == null) {
-            _instance = new Diceware(context);
-        }
-        return _instance;
-    }
+public abstract class Diceware {
 
     private Map<Integer, String> _wordMap;
 
-    private Diceware(Context context) {
+    public Diceware(Context context) {
 
-        InputStream inputStream = context.getResources().openRawResource(R.raw.diceware_wordlist);
+        InputStream inputStream = context.getResources().openRawResource(getWordlistResource());
 
         List<String> diceLines = new ArrayList<>();
 
@@ -87,7 +76,7 @@ public class Diceware {
         StringBuilder numberBuilder = new StringBuilder();
         for (Integer randomNumber : randomNumbers) {
             numberBuilder.append(randomNumber);
-            if (numberBuilder.length() == DICE_PER_WORD) {
+            if (numberBuilder.length() == getDicePerWord()) {
                 if (withSpaces && passwordBuilder.length() > 0) {
                     passwordBuilder.append(" ");
                 }
@@ -101,7 +90,7 @@ public class Diceware {
     }
 
     /**
-     * Get the count of words in the word list.  This is typically 7,776.
+     * Get the count of words in the word list.
      *
      * @return
      */
@@ -118,5 +107,19 @@ public class Diceware {
             super(message);
         }
     }
+
+    /**
+     * Get the wordlist raw resource ID.
+     *
+     * @return
+     */
+    protected abstract int getWordlistResource();
+
+    /**
+     * Get the number of dice throws per word.
+     *
+     * @return
+     */
+    protected abstract int getDicePerWord();
 
 }

@@ -48,12 +48,14 @@ public class MainActivity extends AppCompatActivity {
     private static final String STATE_RANDOM_MECHANISM = "randomMechanism";
     private static final String STATE_PASSWORD_LENGTH = "passwordLength";
     private static final String STATE_PASSWORD = "password";
+    private static final String STATE_WORDLIST_SOURCE = "wordlistSource";
 
     private static final String INTENT_RESULT_KEY_PASSWORD = "password";
 
     private static final String PREF_HIDE_CLIPBOARD_WARNING = "hideClipboardWarning";
     private static final String PREF_DEFAULT_SOURCE = "defaultSource";
     private static final String PREF_DEFAULT_PASSWORD_LENGTH = "defaultPasswordLength";
+    private static final String PREF_DEFAULT_WORDLIST_SOURCE = "defaultWordlistSource";
 
     // Widgets.
     private CoordinatorLayout _coordinatorLayout;
@@ -62,10 +64,15 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton _androidPrngRadioButton;
     private RadioButton _randomOrgRadioButton;
     private RadioButton _diceRadioButton;
+    private RadioButton _reinholdRadioButton;
+    private RadioButton _effRadioButton;
+    private RadioButton _effShortRadioButton;
+    private RadioButton _effShortEditDistRadioButton;
     private SeekBar _passwordLengthSeekBar;
     private TextView _passwordTextView;
     private Button _copyToClipboardButton;
     private Button _useThisPasswordButton;
+    private Diceware _diceware;
 
     private GeneratePasswordTask _generatePasswordTask;
 
@@ -95,6 +102,10 @@ public class MainActivity extends AppCompatActivity {
         _androidPrngRadioButton = (RadioButton) findViewById(R.id.radio_android_prng);
         _randomOrgRadioButton = (RadioButton) findViewById(R.id.radio_random_org);
         _diceRadioButton = (RadioButton) findViewById(R.id.radio_dice);
+        _reinholdRadioButton = (RadioButton) findViewById(R.id.radio_reinhold);
+        _effRadioButton = (RadioButton) findViewById(R.id.radio_eff);
+        _effShortRadioButton = (RadioButton) findViewById(R.id.radio_eff_short);
+        _effShortEditDistRadioButton = (RadioButton) findViewById(R.id.radio_eff_short_2);
         _passwordLengthSeekBar = (SeekBar) findViewById(R.id.seek_bar_password_length);
         _passwordTextView = (TextView) findViewById(R.id.password_text_view);
         _copyToClipboardButton = (Button) findViewById(R.id.copy_to_clipboard);
@@ -155,11 +166,13 @@ public class MainActivity extends AppCompatActivity {
 
         int radioButtonChecked = R.id.radio_android_prng;
         int passwordLength = DEFAULT_PASSWORD_LENGTH;
+        int wordlistRadioButtonChecked = R.id.radio_reinhold;
         if (savedInstanceState != null) {
 
             // Handle restoration from a saved instance state: which radio button is checked and the selected password length.
             radioButtonChecked = savedInstanceState.getInt(STATE_RANDOM_MECHANISM, radioButtonChecked);
             passwordLength = savedInstanceState.getInt(STATE_PASSWORD_LENGTH, passwordLength);
+            wordlistRadioButtonChecked = savedInstanceState.getInt(STATE_WORDLIST_SOURCE, wordlistRadioButtonChecked);
 
         } else {
 
@@ -167,19 +180,28 @@ public class MainActivity extends AppCompatActivity {
             // selection and password length from the preferences.
             radioButtonChecked = getPreferences(MODE_PRIVATE).getInt(PREF_DEFAULT_SOURCE, radioButtonChecked);
             passwordLength = getPreferences(MODE_PRIVATE).getInt(PREF_DEFAULT_PASSWORD_LENGTH, passwordLength);
-
+            wordlistRadioButtonChecked = getPreferences(MODE_PRIVATE).getInt(PREF_DEFAULT_WORDLIST_SOURCE, wordlistRadioButtonChecked);
         }
 
-        // It is possible for the saved button id to not match the buttons (due to app code changes).
+        // It is possible for the saved button IDs to not match the buttons (due to app code changes).
         if (radioButtonChecked != R.id.radio_android_prng && radioButtonChecked != R.id.radio_dice && radioButtonChecked != R.id.radio_random_org) {
             // Default to Android PRNG.
             radioButtonChecked = R.id.radio_android_prng;
         }
+        if (wordlistRadioButtonChecked != R.id.radio_reinhold && wordlistRadioButtonChecked != R.id.radio_eff
+                && wordlistRadioButtonChecked != R.id.radio_eff_short && wordlistRadioButtonChecked != R.id.radio_eff_short_2) {
+            // Default to Android wordlist.
+            wordlistRadioButtonChecked = R.id.radio_reinhold;
+        }
 
         // Check the appropriate radio button, set the random mechanism, and set the password length seek bar.
-        _passwordLengthSeekBar.setProgress(passwordLength - 1);
         ((RadioButton) findViewById(radioButtonChecked)).setChecked(true);
+        ((RadioButton) findViewById(wordlistRadioButtonChecked)).setChecked(true);
+        // set the wordlist source, this has to happen before setRandomMechanism()
+        setWordlistSource(wordlistRadioButtonChecked);
         setRandomMechanism(radioButtonChecked);
+        // the progress has to be set after the Diceware has been instantiated
+        _passwordLengthSeekBar.setProgress(passwordLength - 1);
 
         // Restore the password if applicable.
         if (savedInstanceState != null) {
@@ -213,9 +235,21 @@ public class MainActivity extends AppCompatActivity {
         } else if (_diceRadioButton.isChecked()) {
             radioButtonChecked = _diceRadioButton.getId();
         }
+        // get radio button id of selected wordlist
+        int wordlistRadioButtonChecked = 0;
+        if (_reinholdRadioButton.isChecked()) {
+            wordlistRadioButtonChecked = _reinholdRadioButton.getId();
+        } else if (_effRadioButton.isChecked()) {
+            wordlistRadioButtonChecked = _effRadioButton.getId();
+        } else if (_effShortRadioButton.isChecked()) {
+            wordlistRadioButtonChecked = _effShortRadioButton.getId();
+        } else if (_effShortEditDistRadioButton.isChecked()) {
+            wordlistRadioButtonChecked = _effShortEditDistRadioButton.getId();
+        }
         outState.putInt(STATE_RANDOM_MECHANISM, radioButtonChecked);
         outState.putInt(STATE_PASSWORD_LENGTH, _passwordLengthSeekBar.getProgress());
         outState.putString(STATE_PASSWORD, _passwordTextView.getText().toString());
+        outState.putInt(STATE_WORDLIST_SOURCE, wordlistRadioButtonChecked);
     }
 
     @Override
@@ -254,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // Create a new password generation task to feed numbers from the enter dice values activity.
-                _generatePasswordTask = new GeneratePasswordTask(this) {
+                _generatePasswordTask = new GeneratePasswordTask(this, _diceware) {
                     @Override
                     public void generateRandomNumbers(int count) {
 
@@ -349,7 +383,7 @@ public class MainActivity extends AppCompatActivity {
 
         int passwordLength = _passwordLengthSeekBar.getProgress() + 1;
 
-        double wordCount = Diceware.getInstance(this).getWordCount();
+        double wordCount = _diceware.getWordCount();
         double permutations = Math.pow(wordCount, (double) passwordLength);
         double timeForAllPermutations = permutations / NSA_GUESSES_PER_SECOND;
 
@@ -444,6 +478,36 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void setWordlistSource(View view) {
+        setWordlistSource(view.getId());
+        // generate new password if radio button was used to change wordlist
+        newPassword(null);
+    }
+
+    private void setWordlistSource(int viewId) {
+
+        if (!_justRotated) {
+            getPreferences(MODE_PRIVATE).edit().putInt(PREF_DEFAULT_WORDLIST_SOURCE, viewId).commit();
+        }
+
+        switch (viewId) {
+            case R.id.radio_reinhold:
+                _diceware = new ReinholdDiceware(this);
+                break;
+            case R.id.radio_eff:
+                _diceware = new EffLongDiceware(this);
+                break;
+            case R.id.radio_eff_short:
+                _diceware = new EffShortDiceware(this);
+                break;
+            case R.id.radio_eff_short_2:
+                _diceware = new EffShortEditDistanceDiceware(this);
+                break;
+        }
+        // Update the text that shows the brute-force estimate.
+        updatePasswordLengthInfo();
+    }
+
     /**
      * Handle the "new password" button tap.
      *
@@ -468,7 +532,7 @@ public class MainActivity extends AppCompatActivity {
             _generatePasswordTask.cancel(true);
         }
 
-        _generatePasswordTask = new GeneratePasswordTask(this) {
+        _generatePasswordTask = new GeneratePasswordTask(this, _diceware) {
             @Override
             public void generateRandomNumbers(int count) {
 
@@ -508,7 +572,7 @@ public class MainActivity extends AppCompatActivity {
             _generatePasswordTask.cancel(true);
         }
 
-        _generatePasswordTask = new GeneratePasswordTask(this) {
+        _generatePasswordTask = new GeneratePasswordTask(this, _diceware) {
             @Override
             public void generateRandomNumbers(int count) {
                 Resources res = getResources();
@@ -568,7 +632,7 @@ public class MainActivity extends AppCompatActivity {
     private void newDicePassword() {
         // Jump over to the dice activity to collect the numbers.
         Intent intent = new Intent(this, EnterDiceValuesActivity.class);
-        intent.putExtra(EnterDiceValuesActivity.EXTRA_REQUIRED_ROLL_COUNT, (_passwordLengthSeekBar.getProgress() + 1) * Diceware.DICE_PER_WORD);
+        intent.putExtra(EnterDiceValuesActivity.EXTRA_REQUIRED_ROLL_COUNT, (_passwordLengthSeekBar.getProgress() + 1) * _diceware.getDicePerWord());
         startActivityForResult(intent, REQUEST_CODE_ENTER_DICE_VALUES);
     }
 

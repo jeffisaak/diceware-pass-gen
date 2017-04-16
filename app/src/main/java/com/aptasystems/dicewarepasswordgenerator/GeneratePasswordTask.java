@@ -16,17 +16,19 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public abstract class GeneratePasswordTask extends AsyncTask<Integer, Void, String> {
 
     private Context _context;
+    private Diceware _diceware;
     protected Queue<Integer> _numberQueue;
 
-    public GeneratePasswordTask(Context context) {
+    public GeneratePasswordTask(Context context, Diceware diceware) {
         _context = context;
         _numberQueue = new ConcurrentLinkedQueue<>();
+        _diceware = diceware;
     }
 
     @Override
     protected String doInBackground(Integer... params) {
 
-        int numberCount = params[0] * Diceware.DICE_PER_WORD;
+        int numberCount = params[0] * _diceware.getDicePerWord();
         generateRandomNumbers(numberCount);
 
         if (isCancelled()) {
@@ -55,7 +57,7 @@ public abstract class GeneratePasswordTask extends AsyncTask<Integer, Void, Stri
         // Generate the password.
         String result = null;
         try {
-            result = Diceware.getInstance(_context).generatePassword(_numberQueue, true);
+            result = _diceware.generatePassword(_numberQueue, true);
         } catch (Diceware.PasswordGenerationException e) {
             // Password generation failed.
             return null;
