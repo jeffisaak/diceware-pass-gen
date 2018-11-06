@@ -96,7 +96,7 @@
     <string name="help_who_title">Who wrote this app?</string>
     <string name="help_who_content_1">My name is Jeff Isaak. My background is software development. I am passionate about online security and privacy, personal finance, and garlic. I want to help people reclaim their privacy through clever software. My email address is jisaak@aptasystems.com.</string>
     <string name="help_who_content_2">Credit is due to Arnold Reinhold for the concept of Diceware and the original wordlist, the EFF for the alternative wordlists, and the worldwide volunteers who translate the wordlist. Thanks also to Julio Díaz for the EFF wordlist pull request.</string>
-    <string name="help_who_content_3">If you use this app, like it, and want to donate, you may do so here: https://www.jeffisaak.ca/donate</string>
+    <string name="help_who_content_3">Feel free to visit my web site: https://www.jeffisaak.ca</string>
 
     <!-- Accessibility -->
     <string name="accessibility_die_face_one">Die face: one</string>
