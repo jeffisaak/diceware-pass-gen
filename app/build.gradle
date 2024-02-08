@@ -1,12 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-
+    compileSdk 34
     defaultConfig {
         applicationId "com.aptasystems.dicewarepasswordgenerator"
-        minSdkVersion 15
-        targetSdkVersion 26
+        minSdkVersion 31
+        targetSdkVersion 34
         versionCode 9
         versionName "1.8"
     }
@@ -16,13 +15,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'com.aptasystems.dicewarepasswordgenerator'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:design:26.1.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
     implementation 'com.mcxiaoke.volley:library:1.0.19'
     implementation('com.github.afollestad.material-dialogs:core:0.8.5.4@aar') {
         transitive = true
